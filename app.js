@@ -5,6 +5,7 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
+const sha1 = require('sha1')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
@@ -40,5 +41,22 @@ app.use(users.routes(), users.allowedMethods())
 app.on('error', (err, ctx) => {
   console.error('server error', err, ctx)
 });
+app.use(function *(next){
+  console.log(this.query)
+  let token = 'aixiaoxiaozao'
+  let signature = this.query.signature
+  let nonce = this.query.nonce
+  let timestamp = this.query.timestamp
+  let echostr = this.query.echostr
+  let str = [token, timestamp, nonce].sort().join('')
+  let sha = sha1(str)
+  if (sha === signature) {
+    this.body = echostr + ''
+  } else {
+    this.body = 'wrong'
+  }
+})
+app.listen(8003)
+console.log('Listen: ' + 8003)
 
 module.exports = app
