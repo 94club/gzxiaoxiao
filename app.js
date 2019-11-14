@@ -44,10 +44,7 @@ app.on('error', (err, ctx) => {
 app.use(function *(next){
   console.log(this.query)
   let token = 'aixiaoxiaozao'
-  let signature = this.query.signature
-  let nonce = this.query.nonce
-  let timestamp = this.query.timestamp
-  let echostr = this.query.echostr
+  const { signature, timestamp, nonce, echostr } = this.query
   let str = [token, timestamp, nonce].sort().join('')
   let sha = sha1(str)
   console.log(sha)
