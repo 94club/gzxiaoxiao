@@ -50,6 +50,7 @@ app.use(function *(next){
   let echostr = this.query.echostr
   let str = [token, timestamp, nonce].sort().join('')
   let sha = sha1(str)
+  console.log(sha)
   if (sha === signature) {
     this.body = echostr + ''
   } else {
