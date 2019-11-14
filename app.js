@@ -7,7 +7,7 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const wechat = require('./wechat/g')
 const path = require('path')
-const wechat_file = path.join(__dirname + './config/wechat_file.txt')
+const wechat_file = path.join(__dirname + '/config/wechat_file.txt')
 const util = require('./libs/util')
 const config = {
   wechat: {
