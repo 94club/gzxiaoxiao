@@ -5,7 +5,25 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-const sha1 = require('sha1')
+const wechat = require('./wechat/g')
+const path = require('path')
+const wechat_file = path.join(__dirname + './config/wechat_file.txt')
+const util = require('./libs/util')
+const config = {
+  wechat: {
+    appID: 'wxc3cd965c137ba0c9',
+    appSecret: 'e7e45b24d00b0efbf039385f2fd1de1e',
+    token: 'aixiaoxiaozao',
+    getAccessToken: function () {
+      return util.readFileAsync(wechat_file)
+    },
+    saveAccessToken: function (data) {
+      data = JSON.stringify(data)
+      return util.writeFileAsync(wechat_file, data)
+    }
+  }
+}
+
 
 // const index = require('./routes/index')
 // const users = require('./routes/users')
@@ -41,23 +59,7 @@ const sha1 = require('sha1')
 // app.on('error', (err, ctx) => {
 //   console.error('server error', err, ctx)
 // });
-app.use(function *(next){
-  console.log(this.query + '11111111')
-  let token = 'aixiaoxiaozao'
-  const { signature, timestamp, nonce, echostr } = this.query
-  console.log('signature =' + signature)
-  console.log('timestamp =' + timestamp)
-  console.log('nonce =' + nonce)
-  console.log('echostr =' + echostr)
-  let str = [token, timestamp, nonce].sort().join('')
-  let sha = sha1(str)
-  console.log(sha)
-  if (sha === signature) {
-    this.body = echostr + ''
-  } else {
-    this.body = 'wrong'
-  }
-})
+app.use(wechat(config.wechat))
 app.listen(8003)
 console.log('Listen: ' + 8003)
 
