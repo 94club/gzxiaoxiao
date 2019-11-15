@@ -64,7 +64,7 @@ exports.tpl = function (content, message) {
   }
   type = content.type || type
   info.content = content
-  inco.createTime = new Date.getTime()
+  info.createTime = new Date.getTime()
   info.toUserName = fromUserName
   info.fromUserName = toUserName
   return tpl.compiled(info)
