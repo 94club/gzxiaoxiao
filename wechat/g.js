@@ -3,6 +3,7 @@ const Promise = require('bluebird')
 // 通过raw-body模块可以把this上的request对象（也是http的request）拼装它的数据拿到一个buffer的xml
 const getRawBody = require('raw-body')
 const Wechat = require('./wechat')
+const util = require('util')
 module.exports = function (opts) {
   // const wechat = new Wechat(opts)
   return function *(next) {
@@ -28,7 +29,9 @@ module.exports = function (opts) {
         limit: '1mb',
         encoding: this.encoding
       })
-      console.log(data.toString())
+      // console.log(data.toString())
+      let content = yield util.parseXMLAsync(data)
+      
     }
   }
 }
