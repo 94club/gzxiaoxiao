@@ -5,7 +5,7 @@ const getRawBody = require('raw-body')
 const Wechat = require('./wechat')
 const util = require('./utils')
 module.exports = function (opts) {
-  const wechat = new Wechat(opts)
+  const wechat = new Wechat(opts, handler)
   return function *(next) {
     let that = this
     const token = opts.token
