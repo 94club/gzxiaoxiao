@@ -26,15 +26,15 @@ exports.reply = function *(next) {
     }
   }
   else if (message.MsgType === 'text') {
-    let content = message.content
+    let content = message.Content
     let reply = '复杂' + message.Content
-    if (content == '1') {
+    if (content === '1') {
       reply = '口红'
-    } else if (content == '2') {
+    } else if (content === '2') {
       reply = '香水'
-    } else if (content == '3') {
+    } else if (content === '3') {
       relpy = '包包'
-    } else if (content == '4') {
+    } else if (content === '4') {
       reply = [{
         title: '艾小小太可爱了',
         description: '可爱可爱可爱',
