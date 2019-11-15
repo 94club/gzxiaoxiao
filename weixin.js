@@ -39,7 +39,7 @@ exports.reply = function *(next) {
         title: '艾小小太可爱了',
         description: '可爱可爱可爱',
         picUrl: 'https://xiaoai.jiaxiu.club/img/16e6ea393dd.png',
-        url: 'https://github.com/94club'
+        url: 'https://xiaoai.jiaxiu.club/img/16e6ea393dd.png'
       }]
     }
     this.body = reply
