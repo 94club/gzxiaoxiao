@@ -33,12 +33,12 @@ exports.reply = function *(next) {
     } else if (content === '2') {
       reply = '香水'
     } else if (content === '3') {
-      relpy = '包包'
+      reply = '包包'
     } else if (content === '4') {
       reply = [{
         title: '艾小小太可爱了',
         description: '可爱可爱可爱',
-        picUrl: 'http://o318.photo.store.qq.com/psbe?/927ce151-a8a2-4032-9f96-9d8fed01d0d9/kqqn187Wc7Afd0BzQz5uZSsbEW3BgQqXLj6Io8Ke*..kfSQO0naKubantTN.sxku/m/dD4BAAAAAAAA/7gIAAA!!null&bo=7gLuAu4CEQAJANI!&rf=photolist&t=5',
+        picUrl: 'https://xiaoai.jiaxiu.club/img/16e6ea393dd.png',
         url: 'https://github.com/94club'
       }]
     }
