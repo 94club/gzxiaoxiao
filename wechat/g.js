@@ -1,71 +1,9 @@
 const sha1 = require('sha1')
 const Promise = require('bluebird')
-const request = Promise.promisify(require('request'))
-const api = {
-  accessToken: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential'
-}
-
-function Wechat(opts) {
-  let that = this
-  this.appID = opts.appID
-  this.appSecret = opts.appSecret
-  this.getAccessToken = opts.getAccessToken
-  this.saveAccessToken = opts.saveAccessToken
-
-  this.getAccessToken().then(function (data) {
-    try {
-      data = JSON.stringify(data)
-    } catch (error) {
-      return that.updateAccessToken()
-    }
-
-    if (that.isValidAccessToken(data)) {
-      Promise.resolve(data)
-    } else {
-      return that.updateAccessToken()
-    }
-  })
-  .then(function (data) {
-    that.accessToken = data.accessToken
-    that.expires_in = data.expires_in
-    that.saveAccessToken(data)
-  })
-}
-
-Wechat.prototype.isValidAccessToken = function (data) {
-  if (!data || !data.accessToken || !data.expires_in) {
-    return false
-  }
-  let accessToken = data.accessToken
-  let expires_in = data.expires_in
-  let now = new Date().getTime()
-  if (now < expires_in) {
-    return true
-  } else {
-    return false
-  }
-}
-
-Wechat.prototype.updateAccessToken = function () {
-  let appID = this.appID
-  let appSecret = this.appSecret
-  let url = api.accessToken + '&appid=' + appID + '&secret=' + appSecret
-	console.log(url)
-  return new Promise(function (resolve, reject) {
-    request({url, json: true}).then(function(response) {
-console.log(response.body)     
- let data = response.body
-	console.log(data)
-      let now = new Date().getTime()
-      let expires_in = now + (data.expires_in - 20) * 1000
-      data.expires_in = expires_in
-      resolve(data) 
-    })
-  })
-}
-
+// 通过raw-body模块可以把this上的request对象（也是http的request）拼装它的数据拿到一个buffer的xml
+const getRawBody = require('raw-body')
+const Wechat = require('./wechat')
 module.exports = function (opts) {
-
   const wechat = new Wechat(opts)
   return function *(next) {
     const token = opts.token
@@ -73,10 +11,24 @@ module.exports = function (opts) {
     let str = [token, timestamp, nonce].sort().join('')
     let sha = sha1(str)
     console.log(sha)
-    if (sha === signature) {
-      this.body = echostr + ''
-    } else {
-      this.body = 'wrong'
+    if (this.method === 'GET') {
+      if (sha === signature) {
+        this.body = echostr + ''
+      } else {
+        this.body = 'wrong'
+      }
+    } else if (this.method === 'POST') {
+      if (sha !== signature) {
+        this.body = 'wrong'
+        return false
+      }
+
+      const data = yield getRawBody(this.req, {
+        length: this.length,
+        limit: '1mb',
+        encoding: this.encoding
+      })
+      console.log(data.toString())
     }
   }
 }
