@@ -5,9 +5,8 @@ const util = require('./utils')
 const api = {
   accessToken: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential'
 }
-function Wechat(opts, handler) {
+function Wechat(opts) {
     let that = this
-    this.reply = opts.handler
     this.appID = opts.appID
     this.appSecret = opts.appSecret
     this.getAccessToken = opts.getAccessToken

@@ -4,8 +4,8 @@ const Promise = require('bluebird')
 const getRawBody = require('raw-body')
 const Wechat = require('./wechat')
 const util = require('./utils')
-module.exports = function (opts) {
-  const wechat = new Wechat(opts, handler)
+module.exports = function (opts, handler) {
+  const wechat = new Wechat(opts)
   return function *(next) {
     let that = this
     const token = opts.token
