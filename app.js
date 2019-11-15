@@ -7,6 +7,7 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const config = require('./config')
 const weixin = require('./weixin')
+const wechat = require('./wechat/g')
 
 
 // const index = require('./routes/index')
