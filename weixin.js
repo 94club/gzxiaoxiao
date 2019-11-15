@@ -6,7 +6,7 @@ exports.reply = function *(next) {
       if (message.EventKey) {
         console.log('扫描二维码=' + message.EventKey + ' ' + message.ticket)
       }
-      this.body = '94club欢迎你\r\n' + ' 消息ID=' + message.MsgId
+      this.body = '欢迎艾小小大驾光临\r\n'
     }
     else if (message.Event === 'unsubscribe') {
       console.log('取消订阅')

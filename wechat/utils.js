@@ -55,16 +55,16 @@ function formatMessage(result) {
 exports.formatMessage = formatMessage
 exports.tpl = function (content, message) {
   let info = {}
-  let type = 'text'
+  let magType = 'text'
   let fromUserName = message.FromUserName
   let toUserName = message.ToUserName
   console.log(content)
   if (Array.isArray(content)) {
-    type = 'news'
+    magType = 'news'
   }
-  type = content.type || type
+  magType = content.magType || magType
   info.content = content
-  info.createTime = new Date.getTime()
+  info.createTime = new Date().getTime()
   info.toUserName = fromUserName
   info.fromUserName = toUserName
   return tpl.compiled(info)
