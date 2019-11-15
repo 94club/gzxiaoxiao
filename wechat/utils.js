@@ -9,6 +9,19 @@ exports.parseXMLAsync = function(xml) {
     });
   });
 };
+// { xml:
+//   { ToUserName: [ 'gh_07333170cb43' ],
+//     FromUserName: [ 'oxaJ-1tuyprI6BVVMehUJqdsggtg' ],
+//     CreateTime: [ '1573802077' ],
+//     MsgType: [ 'event' ],
+//     Event: [ 'subscribe' ],
+//     EventKey: [ '' ] } }
+// { ToUserName: 'gh_07333170cb43',
+//  FromUserName: 'oxaJ-1tuyprI6BVVMehUJqdsggtg',
+//  CreateTime: '1573802077',
+//  MsgType: 'event',
+//  Event: 'subscribe',
+//  EventKey: '' }
 
 function formatMessage(result) {
   let message = {}

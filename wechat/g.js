@@ -7,6 +7,7 @@ const util = require('./utils')
 module.exports = function (opts) {
   // const wechat = new Wechat(opts)
   return function *(next) {
+    let that = this
     const token = opts.token
     const { signature, timestamp, nonce, echostr } = this.query
     let str = [token, timestamp, nonce].sort().join('')
@@ -34,6 +35,23 @@ module.exports = function (opts) {
       console.log(content)
       let message = util.formatMessage(content.xml)
       console.log(message)
+
+      if (message.MsgType === 'event') {
+        if (message.Event === 'subscribe') {
+          let now = new Date().getTime()
+          that.status = 200
+          that.type = 'application/xml'
+          that.body = 
+          '<xml>' +
+          '<ToUserName><![CDATA['+ message.FromUserName +']]></ToUserName>' +
+          '<FromUserName><![CDATA['+ message.ToUserName +']]></FromUserName>' +
+          '<CreateTime>'+ now +'</CreateTime>' +
+          '<MsgType><![CDATA[text]]></MsgType>' +
+          '<Content><![CDATA[欢迎来到94club]]></Content>' +
+          '</xml>'
+          return
+        }
+      }
     }
   }
 }
