@@ -18,8 +18,8 @@ exports.reply = function *(next) {
       console.log('取消订阅')
       this.body = ''
     }else if (message.Event === 'LOCATION') {
-      console.log('取消订阅')
-      this.body = '上报位置' + message.Latitude + '/' + message.Longitude + '-' + messagePrecision
+      console.log('上报位置')
+      this.body = '上报位置' + message.Latitude + '/' + message.Longitude + '-' + message.Precision
     }else if (message.Event === 'CLICK') {
       console.log('您点击了菜单')
       this.body = '您点击了菜单' + message.EventKey
