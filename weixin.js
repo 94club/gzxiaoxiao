@@ -49,10 +49,18 @@ exports.reply = function *(next) {
       }]
     } else if (content === '5') {
       let data = yield wechatapi.uploadMaterial('image', __dirname + '/psbe.jpg')
-      console.log()
       reply = {
         msgType: 'image',
         mediaId: data.media_id
+      }
+    } else if (content === '6') {
+      let data = yield wechatapi.uploadMaterial('video', __dirname + '/3.mp4')
+      console.log()
+      reply = {
+        msgType: 'video',
+        mediaId: data.media_id,
+        title: '小艾',
+        description: '视屏'
       }
     }
     this.body = reply
