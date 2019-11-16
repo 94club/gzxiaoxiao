@@ -51,7 +51,7 @@ exports.reply = function *(next) {
       let data = yield wechatapi.uploadMaterial('image', __dirname + '/psbe.jpg')
       reply = {
         type: 'image',
-        mediaId: data.mediaId
+        mediaId: data.media_id
       }
     }
     this.body = reply

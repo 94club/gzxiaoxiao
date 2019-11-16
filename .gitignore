@@ -7,6 +7,7 @@ yarn-error.log*
 logs/
 public/uploads
 public/img
+config/wechat_file.txt
 
 # Editor directories and files
 .idea
