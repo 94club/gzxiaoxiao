@@ -49,8 +49,9 @@ exports.reply = function *(next) {
       }]
     } else if (content === '5') {
       let data = yield wechatapi.uploadMaterial('image', __dirname + '/psbe.jpg')
+      console.log()
       reply = {
-        type: 'image',
+        msgType: 'image',
         mediaId: data.media_id
       }
     }

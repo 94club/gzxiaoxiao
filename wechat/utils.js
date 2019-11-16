@@ -63,7 +63,7 @@ exports.tpl = function (content, message) {
   if (Array.isArray(content)) {
     msgType = 'news'
   }
-  info.msgType = msgType
+  info.msgType = content.msgType || msgType
   info.content = content
   info.createTime = new Date().getTime()
   info.toUserName = fromUserName
