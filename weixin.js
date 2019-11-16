@@ -70,7 +70,7 @@ exports.reply = function *(next) {
         title: '回复音乐',
         description: '音乐',
         musicUrl: 'https://xiaoai.jiaxiu.club/img/3.mp3',
-        ThumbMediaId: data.media_id
+        thumbMediaId: data.media_id
       }
     }
     this.body = reply
