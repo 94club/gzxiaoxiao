@@ -62,6 +62,16 @@ exports.reply = function *(next) {
         title: '小艾',
         description: '视屏'
       }
+    } else if (content === '7') {
+      let data = yield wechatapi.uploadMaterial('image', __dirname + '/psbe.jpg')
+      console.log()
+      reply = {
+        msgType: 'music',
+        title: '回复音乐',
+        description: '音乐',
+        musicUrl: 'https://xiaoai.jiaxiu.club/img/3.mp3',
+        ThumbMediaId: data.media_id
+      }
     }
     this.body = reply
   }
