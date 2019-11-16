@@ -14,25 +14,7 @@ function Wechat(opts) {
     this.appSecret = opts.appSecret
     this.getAccessToken = opts.getAccessToken
     this.saveAccessToken = opts.saveAccessToken
-  
-    this.getAccessToken().then(function (data) {
-      try {
-        data = JSON.stringify(data)
-      } catch (error) {
-        return that.updateAccessToken()
-      }
-  
-      if (that.isValidAccessToken(data)) {
-        return Promise.resolve(data)
-      } else {
-        return that.updateAccessToken()
-      }
-    })
-    .then(function (data) {
-      that.accessToken = data.accessToken
-      that.expires_in = data.expires_in
-      that.saveAccessToken(data)
-    })
+    this.fetchAccessToken()
 }
   
 Wechat.prototype.isValidAccessToken = function (data) {
