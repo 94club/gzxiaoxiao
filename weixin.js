@@ -1,4 +1,10 @@
 'use strict'
+
+const Wechat = reuire('./wechat/wechat')
+const config = require('./config')
+
+const wechatapi = new Wechat(config.wechat)
+
 exports.reply = function *(next) {
   let message = this.weixin
   if (message.MsgType === 'event') {
@@ -41,6 +47,12 @@ exports.reply = function *(next) {
         picUrl: 'https://xiaoai.jiaxiu.club/img/16e6ea393dd.png',
         url: 'https://xiaoai.jiaxiu.club/img/16e6ea393dd.png'
       }]
+    } else if (content === '5') {
+      let data = yield wechatapi.uploadMaterial('image', __dirname + '/psbe.jpg')
+      reply = {
+        type: 'image',
+        mediaId: data.mediaId
+      }
     }
     this.body = reply
   }

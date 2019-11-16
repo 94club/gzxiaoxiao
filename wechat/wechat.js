@@ -2,8 +2,11 @@
 const Promise = require('bluebird')
 const request = Promise.promisify(require('request'))
 const util = require('./utils')
+const fs = require('fs')
+const prefix = 'https://api.weixin.qq.com/cgi-bin'
 const api = {
-  accessToken: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential'
+  accessToken: prefix + '/token?grant_type=client_credential',
+  upload: prefix + '/media/upload'
 }
 function Wechat(opts) {
     let that = this
@@ -30,7 +33,7 @@ function Wechat(opts) {
       that.expires_in = data.expires_in
       that.saveAccessToken(data)
     })
-  }
+}
   
 Wechat.prototype.isValidAccessToken = function (data) {
 if (!data || !data.accessToken || !data.expires_in) {
@@ -44,7 +47,35 @@ if (now < expires_in) {
     return false
 }
 }
-  
+
+Wechat.prototype.fetchAccessToken = function (data) {
+  let that = this
+  if (this.access_token && this.expires_in) {
+    if (this.isValidAccessToken(this)) {
+      return Promise.resolve(this)
+    }
+  }
+  this.getAccessToken().then(function (data) {
+    try {
+      data = JSON.stringify(data)
+    } catch (error) {
+      return that.updateAccessToken()
+    }
+
+    if (that.isValidAccessToken(data)) {
+      return Promise.resolve(data)
+    } else {
+      return that.updateAccessToken()
+    }
+  })
+  .then(function (data) {
+    that.accessToken = data.accessToken
+    that.expires_in = data.expires_in
+    that.saveAccessToken(data)
+    return Promise.resolve(data)
+  })
+}
+
 Wechat.prototype.updateAccessToken = function () {
     let appID = this.appID
     let appSecret = this.appSecret
@@ -68,6 +99,28 @@ Wechat.prototype.reply = function () {
   this.status = 200
   this.type = 'application/xml'
   this.body = xml
+}
+
+Wechat.prototype.uploadMaterial  =function (type, filepath) {
+  let that = this
+  let form = {
+    media: fs.createReadStream(filepath)
+  }
+  return new Promise(function (resolve, reject) {
+    that.fetchAccessToken().then(function (data) {
+      let url = api.upload + '?access_token=' + data.access_token + '&type=' + type
+      request({method: 'POST',url,formData: form, json: true}).then(function(response) {
+        let data = response.body
+        if (data) {
+          resolve(data) 
+        } else {
+          throw new Error('upload meterial file')
+        }
+      }).catch(function (err) {
+        console.log(err)
+      })
+    })
+  }) 
 }
 
 module.exports = Wechat
