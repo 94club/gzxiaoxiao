@@ -9,7 +9,6 @@ const api = {
   upload: prefix + '/media/upload'
 }
 function Wechat(opts) {
-    let that = this
     this.appID = opts.appID
     this.appSecret = opts.appSecret
     this.getAccessToken = opts.getAccessToken
@@ -18,16 +17,16 @@ function Wechat(opts) {
 }
   
 Wechat.prototype.isValidAccessToken = function (data) {
-if (!data || !data.accessToken || !data.expires_in) {
+  if (!data || !data.access_token || !data.expires_in) {
     return false
-}
-let expires_in = data.expires_in
-let now = new Date().getTime()
-if (now < expires_in) {
+  }
+  let expires_in = data.expires_in
+  let now = new Date().getTime()
+  if (now < expires_in) {
     return true
-} else {
+  } else {
     return false
-}
+  }
 }
 
 Wechat.prototype.fetchAccessToken = function (data) {
@@ -89,9 +88,11 @@ Wechat.prototype.uploadMaterial  =function (type, filepath) {
     media: fs.createReadStream(filepath)
   }
   return new Promise(function (resolve, reject) {
-    that.fetchAccessToken().then(function (data) {
+    // 没有使用到fetchaccesstoken  不知道哪里问题
+    that.getAccessToken().then(function (data) {
       let url = api.upload + '?access_token=' + data.access_token + '&type=' + type
       request({method: 'POST',url,formData: form, json: true}).then(function(response) {
+        console.log(response)
         let data = response.body
         if (data) {
           resolve(data) 
