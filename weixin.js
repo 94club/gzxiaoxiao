@@ -1,6 +1,6 @@
 'use strict'
 
-const Wechat = reuire('./wechat/wechat')
+const Wechat = require('./wechat/wechat')
 const config = require('./config')
 
 const wechatapi = new Wechat(config.wechat)
