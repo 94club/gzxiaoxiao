@@ -8,7 +8,6 @@ exports.readFileAsync = function(fpath, encoding) {
       if (err) {
         reject(err);
       } else {
-        console.log('content' + content)
         resolve(content);
       }
     });
